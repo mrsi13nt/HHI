@@ -10,7 +10,7 @@ headers = {
 def url(url, head=None, cookies=None):  # main func of scan
     if head:
         r = requests.get(url, headers={'Host': head})
-    elif cookie:
+    elif cookies:
         r = requests.get(url, headers={'Host': 'ping.com',
         'Cookies': cookies})
     elif head and cookies:
