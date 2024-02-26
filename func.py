@@ -8,19 +8,23 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 # header to scan
 headers = {
-    'Host': 'ping.com'
+    'X-Forwarded-Host': 'www.ping.com',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0'
 }
+
+proxies = {'http': 'http://127.0.0.1:8080', 'https': 'http://127.0.0.1:8080'}
 
 def url(url, head=None, cookies=None):  # main func of scan
     try:
         if head:
-            r = requests.get(url, headers={'Host': head}, verify=False)
+            r = requests.get(url, headers={'Host': head}, verify=False, proxies=proxies)
         elif cookies:
             r = requests.get(url, headers={'Host': 'ping.com', 'Cookies': cookies}, verify=False)
         elif head and cookies:
             r = requests.get(url, headers={'Host': head, 'Cookies': cookies}, verify=False)
         else:
-            r = requests.get(url, headers=headers, verify=False)
+            #s = requests.get(url, verify=False, proxies=proxies)
+            r = requests.get(url, headers=headers, verify=False, proxies=proxies)
 
         if r.status_code == 200:
             print(f'url has host header injection\n {url}')
